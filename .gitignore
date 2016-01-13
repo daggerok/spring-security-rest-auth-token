@@ -1,6 +1,9 @@
 .idea/
 .gradle/
 build/
+node_modules/
+src/main/resources/public/
+**/.DS_Store
 *.iml
 *.ipr
 *.iws

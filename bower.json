@@ -1,0 +1,25 @@
+{
+  "name": "wsock",
+  "description": "wsock",
+  "main": "sockjs-client",
+  "authors": [
+    "Maksim Kostromin <daggerok@gmail.com>"
+  ],
+  "license": "ISC",
+  "moduleType": [],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "stomp": "stomp-websocket#~2.3.4",
+    "sockjs-client": "~1.0.3",
+    "jquery": "~2.2.0",
+    "knockout": "~3.4.0",
+    "bootstrap": "~3.3.6"
+  }
+}

@@ -6,6 +6,8 @@ spring:
 logging:
   level:
     root: INFO
-    org.springframework.boot.autoconfigure.security: DEBUG
-    org.springframework.security: DEBUG
+    org.springframework.web.socket: DEBUG
+    org.springframework.messaging: DEBUG
+#    org.springframework.boot.autoconfigure.security: DEBUG
+#    org.springframework.security: DEBUG
 

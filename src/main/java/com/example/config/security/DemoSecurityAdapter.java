@@ -1,5 +1,6 @@
 package com.example.config.security;
 
+import com.example.config.security.csrf.DemoCsrfTokenGeneratorFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -8,9 +9,12 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.csrf.CsrfFilter;
 
 @EnableWebSecurity
 public class DemoSecurityAdapter extends WebSecurityConfigurerAdapter {
+    @Autowired DemoCsrfTokenGeneratorFilter csrfTokenGeneratorFilter;
+
     @Autowired DemoUserDetailsService demoUserDetailsService;
 
     @Autowired DemoAuthenticationTokenFilter demoAuthenticationTokenFilter;
@@ -19,13 +23,6 @@ public class DemoSecurityAdapter extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-//        RequestMatcher csrfMatcher = request -> {
-//            Pattern get = Pattern.compile("^GET$");
-//            if (get.matcher(request.getMethod()).matches()) {
-//                return false;
-//            }
-//            return true;
-//        };
         http
             .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -34,18 +31,20 @@ public class DemoSecurityAdapter extends WebSecurityConfigurerAdapter {
                 .frameOptions()
                 .sameOrigin()
                 .and()
-//            .csrf().disable()
+            .addFilterBefore(demoAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
+                .exceptionHandling().authenticationEntryPoint(demoAuthenticationEntryPoint)
+                .and()
+            .addFilterAfter(csrfTokenGeneratorFilter, CsrfFilter.class) // populate _csrf into header
             .csrf()
+                .ignoringAntMatchers("/")
+                .ignoringAntMatchers("/*.css")
+                .ignoringAntMatchers("/*.js")
                 .ignoringAntMatchers("/api/**")
                 .and()
             .authorizeRequests()//.anyRequest().permitAll();
                 .antMatchers("/").permitAll()
                 .antMatchers("/api/**").fullyAuthenticated()
-                .and()
-            .addFilterBefore(demoAuthenticationTokenFilter, UsernamePasswordAuthenticationFilter.class)
-                .exceptionHandling().authenticationEntryPoint(demoAuthenticationEntryPoint)
-                .and()
-            .httpBasic();
+                .and();
     }
 
     @Override

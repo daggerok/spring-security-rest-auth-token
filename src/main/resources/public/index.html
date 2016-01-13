@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>wsock</title>
+    <link rel="stylesheet" href="index.css"/>
+</head>
+<body onload="disconnect()">
+<div class="container">
+    <div class="container panel-heading">
+        <button class="btn btn-success" id="connect" onclick="connect()">Connect</button>
+        <button class="btn btn-warning" id="disconnect" disabled="disabled" onclick="disconnect()">Disconnect</button>
+    </div>
+    <div class="container" id="conversationDiv">
+        <label>What is your name?</label><input type="text" id="name"/>
+        <button id="sendName" onclick="sendName()">Send</button>
+        <p id="response"></p>
+    </div>
+</div>
+<script src="index.js"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+spring:
+  data:
+    rest:
+      base-path: /api
+
+logging:
+  level:
+    root: INFO
+    org.springframework.boot.autoconfigure.security: DEBUG
+    org.springframework.security: DEBUG
+

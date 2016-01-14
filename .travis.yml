@@ -1,7 +1,7 @@
 language: java
 jdk: oraclejdk8
 install: true
-before_install: nvm use 5
+before_install: nvm install 5
 script: ./gradlew clean npm -Pnode=prod build
 notifications:
   on_failure: change # always|never

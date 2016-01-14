@@ -2880,14 +2880,114 @@ if (typeof define === 'function' && define.amd) {
 
 }).call(this);
 
-var connect, disconnect, sendName, setConnected, showWelcome, stompClient;
 
-stompClient = null;
+/*
+  Provided API to work with WebSockets and REST
+ */
+this.Api = (function() {
+  function Api() {}
 
-setConnected = function(connected) {
-  document.getElementById('connect').disabled = connected;
-  document.getElementById('disconnect').disabled = !connected;
-  if (connected) {
+  Api.WebSocket = (function() {
+    var config, stompClient;
+
+    function WebSocket() {}
+
+    stompClient = null;
+
+    config = {
+      debug: false,
+      connected: false,
+      sockJs: {
+        url: '/ws/url/welcome'
+      },
+      stomp: {
+        subscribe: {
+          url: '/ws/topic/welcome'
+        },
+        app: {
+          url: '/app/ws/url/welcome'
+        }
+      }
+    };
+
+
+    /* getters, setters, API */
+
+    WebSocket.connect = function(func) {
+      var socket;
+      if (config.debug) {
+        console.log("connecting to the " + config.sockJs.url + " ...");
+      }
+      socket = new SockJS(config.sockJs.url);
+      stompClient = Stomp.over(socket);
+      return stompClient.connect({}, func);
+    };
+
+    WebSocket.isConnected = function() {
+      return config.connected;
+    };
+
+    WebSocket.setConnected = function(current) {
+      return config.connected = current;
+    };
+
+    WebSocket.disconnect = function() {
+      if (stompClient != null) {
+        stompClient.disconnect();
+      }
+      config.connected = false;
+      if (config.debug) {
+        return console.log("disconnected");
+      }
+    };
+
+    WebSocket.subscribe = function(func) {
+      return stompClient.subscribe(config.stomp.subscribe.url, func);
+    };
+
+    WebSocket.send = function(message) {
+      return stompClient.send(config.stomp.app.url, {}, message);
+    };
+
+    return WebSocket;
+
+  })();
+
+  Api.Rest = (function() {
+    function Rest() {}
+
+    return Rest;
+
+  })();
+
+  return Api;
+
+})();
+
+
+/*
+  Frontend application (example of using App.WebSocket API)
+
+  for development purpose and better DOM manipulation, use jquery, knockout or other library / framework..
+ */
+var connect, disconnect, publisher, render, sendName;
+
+connect = function() {
+  if (!Api.WebSocket.isConnected()) {
+    return Api.WebSocket.connect(function(frame) {
+      Api.WebSocket.setConnected(true);
+      render();
+      return Api.WebSocket.subscribe(function(welcome) {
+        return publisher(welcome);
+      });
+    });
+  }
+};
+
+render = function() {
+  document.getElementById('connect').disabled = Api.WebSocket.isConnected();
+  document.getElementById('disconnect').disabled = !Api.WebSocket.isConnected();
+  if (Api.WebSocket.isConnected()) {
     document.getElementById('conversationDiv').style.visibility = 'visible';
   } else {
     document.getElementById('conversationDiv').style.visibility = 'hidden';
@@ -2895,41 +2995,28 @@ setConnected = function(connected) {
   return document.getElementById('response').innerHTML = '';
 };
 
-connect = function() {
-  var socket;
-  socket = new SockJS('/ws/url/welcome');
-  stompClient = Stomp.over(socket);
-  return stompClient.connect({}, function(frame) {
-    setConnected(true);
-    console.log("Connected: " + frame);
-    return stompClient.subscribe('/ws/topic/welcome', function(welcome) {
-      return showWelcome(JSON.parse(welcome.body).content);
-    });
-  });
-};
-
-disconnect = function() {
-  if (stompClient != null) {
-    stompClient.disconnect();
-  }
-  setConnected(false);
-  return console.log("Disconnected");
-};
-
-sendName = function() {
-  var name;
-  name = document.getElementById('name').value;
-  stompClient.send("/app/ws/url/welcome", {}, JSON.stringify({
-    name: name
-  }));
-  return document.getElementById('name').value = '';
-};
-
-showWelcome = function(message) {
-  var p, response;
+publisher = function(welcome) {
+  var message, p, response;
+  message = JSON.parse(welcome.body).content;
   response = document.getElementById('response');
   p = document.createElement('p');
   p.style.wordWrap = 'break-word';
   p.appendChild(document.createTextNode(message));
   return response.appendChild(p);
+};
+
+sendName = function() {
+  var name;
+  name = document.getElementById('name').value;
+  Api.WebSocket.send(JSON.stringify({
+    name: name
+  }));
+  return document.getElementById('name').value = '';
+};
+
+disconnect = function() {
+  if (Api.WebSocket.isConnected()) {
+    Api.WebSocket.disconnect();
+  }
+  return render();
 };

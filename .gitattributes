@@ -1,0 +1,11 @@
+# Ignore all differences in line endings
+# do these commands in your repo before:
+
+# git config core.autocrlf false
+# git config core.eol lf
+# git rm --cached -rf .
+# git diff --cached --name-only -z | xargs -n 50 -0 git add -f
+# git ls-files -z | xargs -0 rm
+# git checkout .
+
+* text=auto

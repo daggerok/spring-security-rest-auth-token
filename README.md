@@ -10,7 +10,7 @@ spring-security-rest-auth-token [![build](https://travis-ci.org/daggerok/spring-
 
 ```shell
 git clone ... && cd $_
-gradle npm # or: npm run gulp # required node
+gradle clean node build # or: $ gradle clean && npm start && gradle build # installed node is required
 gradle bootRun # or java -jar build/libs/*.jar
 open http://localhost:8080/
 ```

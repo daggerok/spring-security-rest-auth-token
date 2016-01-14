@@ -1,6 +1,9 @@
 package com.example.config.security;
 
+import com.example.config.security.auth.DemoAuthenticationEntryPoint;
+import com.example.config.security.auth.DemoAuthenticationTokenFilter;
 import com.example.config.security.csrf.DemoCsrfTokenGeneratorFilter;
+import com.example.config.security.userdetails.DemoUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,11 +18,14 @@ import org.springframework.security.web.csrf.CsrfFilter;
 public class DemoSecurityAdapter extends WebSecurityConfigurerAdapter {
     @Autowired DemoCsrfTokenGeneratorFilter csrfTokenGeneratorFilter;
 
-    @Autowired DemoUserDetailsService demoUserDetailsService;
+    @Autowired
+    DemoUserDetailsService demoUserDetailsService;
 
-    @Autowired DemoAuthenticationTokenFilter demoAuthenticationTokenFilter;
+    @Autowired
+    DemoAuthenticationTokenFilter demoAuthenticationTokenFilter;
 
-    @Autowired DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
+    @Autowired
+    DemoAuthenticationEntryPoint demoAuthenticationEntryPoint;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {

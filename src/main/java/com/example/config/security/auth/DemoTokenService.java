@@ -1,5 +1,6 @@
-package com.example.config.security;
+package com.example.config.security.auth;
 
+import com.example.config.security.userdetails.DemoUserDetails;
 import com.example.domain.User;
 import com.example.domain.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;

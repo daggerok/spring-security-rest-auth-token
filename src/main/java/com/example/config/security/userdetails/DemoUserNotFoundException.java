@@ -1,4 +1,4 @@
-package com.example.config.security;
+package com.example.config.security.userdetails;
 
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 

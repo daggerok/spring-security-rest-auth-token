@@ -11,6 +11,6 @@ spring-security-rest-auth-token [![build](https://travis-ci.org/daggerok/spring-
 ```shell
 git clone ... && cd $_
 gradle npm # or: npm run gulp # required node.js
-gradle bootRun # or java -jar build/libs/demo.jar
+gradle bootRun # or java -jar build/libs/*.jar
 open http://localhost:8080/
 ```

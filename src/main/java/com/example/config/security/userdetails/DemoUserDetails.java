@@ -20,11 +20,12 @@ public class DemoUserDetails extends User implements UserDetails, Serializable {
         setPassword(user.getPassword());
         setUsername(user.getUsername());
         setUpdatedAt(user.getUpdatedAt());
+        setRole(user.getRole());
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return AuthorityUtils.createAuthorityList("ROLE_USER");
+        return AuthorityUtils.createAuthorityList(getRole());
     }
 
     @Override

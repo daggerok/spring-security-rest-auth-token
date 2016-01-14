@@ -4,6 +4,7 @@ import com.example.config.security.auth.AuthenticationFilter;
 import com.example.config.security.auth.BadAuthenticationFilter;
 import com.example.config.security.csrf.CsrfTokenFilter;
 import com.example.config.security.userdetails.DemoUserDetailsService;
+import com.example.domain.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -39,7 +40,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                 .and()
             .addFilterAfter(csrfTokenFilter, CsrfFilter.class) // populate _csrf into header
             .csrf()
-//                .ignoringAntMatchers("/api/**")
+                //.ignoringAntMatchers("/api/**")
                 .and()
             .authorizeRequests()
                 .antMatchers("/").permitAll()
@@ -47,8 +48,9 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*.js").permitAll()
                 .antMatchers("/*.css").permitAll()
                 .antMatchers("/ws/url/welcome/**").permitAll()
-//                .antMatchers("/api/**").fullyAuthenticated()
-                .anyRequest().fullyAuthenticated();
+                //.antMatchers("/api/**").fullyAuthenticated()
+            .anyRequest()
+                .fullyAuthenticated();
     }
 
     @Override

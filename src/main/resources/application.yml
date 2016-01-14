@@ -3,6 +3,20 @@ spring:
     rest:
       base-path: /api
 
+management:
+  context-path: /admin
+  security:
+   role: ADMIN
+
+shell:
+  simple:
+    user:
+      name: admin
+      password: admin
+
+endpoints:
+  sensitive: true
+
 logging:
   level:
     root: INFO

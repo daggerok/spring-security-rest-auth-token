@@ -1,5 +1,4 @@
 language: java
 jdk: oraclejdk8
-#install: true
-before_install: nvm install 5
+before_script: nvm install 5
 script: gradle clean node -Pnpm=prod build

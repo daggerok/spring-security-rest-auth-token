@@ -47,7 +47,7 @@ public class SecurityAdapter extends WebSecurityConfigurerAdapter {
                 .antMatchers("/*.js").permitAll()
                 .antMatchers("/*.css").permitAll()
                 .antMatchers("/ws/url/welcome/**").permitAll()
-                .antMatchers("/api/**").fullyAuthenticated()
+//                .antMatchers("/api/**").fullyAuthenticated()
                 .anyRequest().fullyAuthenticated();
     }
 

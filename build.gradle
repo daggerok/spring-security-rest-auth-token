@@ -8,7 +8,7 @@ apply plugin: "idea"
 apply plugin: "eclipse"
 apply plugin: "spring-boot"
 
-jar { baseName = "demo" }
+jar { baseName = "spring-security-rest-auth-token" }
 
 sourceCompatibility = JavaVersion.VERSION_1_8
 targetCompatibility = sourceCompatibility
@@ -35,7 +35,7 @@ dependencies {
 	runtime "com.h2database:h2"
 
 	testCompile "org.springframework.boot:spring-boot-starter-test",
-			"org.springframework.restdocs:spring-restdocs-mockmvc"
+				"org.springframework.restdocs:spring-restdocs-mockmvc"
 }
 
 /**
@@ -46,13 +46,13 @@ import org.apache.tools.ant.taskdefs.condition.Os
 import java.nio.file.Files
 import java.nio.file.Paths
 
-// gradle build -Pnode="task" // where task: [prod, map, dev]
-task npm(type: Exec) {
-	def node = project.hasProperty("node") ? project.property("node") : npmDefaultProfile
+// gradle node -Pnpm=$profile // where profile is: [prod, dev]
+task node(type: Exec) {
+	def npm = project.hasProperty("npm") ? project.property("npm") : defaultProfile
 	def frontendDir = "${project.projectDir}/node"
 	def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
-	def script = "${frontendDir}/${node}." + (isWindows ? "cmd" : "bash")
-	print(script)
+	def script = "${frontendDir}/${npm}." + (isWindows ? "cmd" : "bash")
+
 	if (Files.notExists(Paths.get(script))) throw new GradleException("file ${script} wasn't found.")
 
 	workingDir frontendDir

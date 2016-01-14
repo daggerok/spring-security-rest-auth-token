@@ -23,24 +23,24 @@ public class DemoApplicationTests {
 		assertNotNull("null applicationContext", applicationContext);
 
 		Arrays.asList(
+				"authenticationFilter",
 				"badAuthenticationFilter",
-				"authenticationTokenFilter",
-
 				"passwordService",
 				"tokenService",
 
+				"csrfService",
 				"csrfTokenFilter",
 
 				"demoUserDetails",
 				"demoUserDetailsService",
 
-				"demoSecurityAdapter",
+				"securityAdapter",
 
 				"webSocketMessageBrokerConfig",
-				"welcomeMessageEndpoint",
 
 				"demoConfig",
 
+				"welcomeMessageEndpoint",
 				"userRepository",
 
 				"demoApplication"

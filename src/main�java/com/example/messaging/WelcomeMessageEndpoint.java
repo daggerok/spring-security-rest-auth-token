@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import java.util.concurrent.TimeUnit;
 
 @Controller
-public class WelcomeEndpoint {
-    @MessageMapping("/ws/stomp/endpoint/welcome")
-    @SendTo("/ws/messaging/topic/welcome")
+public class WelcomeMessageEndpoint {
+    @MessageMapping("/ws/url/welcome")
+    @SendTo("/ws/topic/welcome")
     public Welcome welcome(Message message) throws InterruptedException {
         TimeUnit.SECONDS.sleep(2);
         return Welcome.of("Hey, " + message.getName() + "!");

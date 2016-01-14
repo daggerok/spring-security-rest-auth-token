@@ -4,7 +4,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
-public class DemoPasswordService {
+public class PasswordService {
     private final static BCryptPasswordEncoder PASSWORD_ENCODER = new BCryptPasswordEncoder();
 
     public String encode(String rawPassword) {

@@ -14,14 +14,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 @Service
-public class DemoTokenService {
+public class TokenService {
     public static final String USERNAME = "username";
 
     public static final String TOKEN = "token";
 
     @Autowired UserRepository users;
 
-    @Autowired DemoPasswordService passwordService;
+    @Autowired
+    PasswordService passwordService;
 
     public UserDetails getUserDetails(ServletRequest request) {
         Map<String, String> headers = parseHeaders(request);

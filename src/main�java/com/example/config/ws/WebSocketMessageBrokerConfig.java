@@ -8,7 +8,7 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 
 @Configuration
 @EnableWebSocketMessageBroker
-public class WebSocketBrokerConfig extends AbstractWebSocketMessageBrokerConfigurer {
+public class WebSocketMessageBrokerConfig extends AbstractWebSocketMessageBrokerConfigurer {
     /**
      * Register STOMP endpoints mapping each to a specific URL and (optionally)
      * enabling and configuring SockJS fallback options.
@@ -17,13 +17,12 @@ public class WebSocketBrokerConfig extends AbstractWebSocketMessageBrokerConfigu
      */
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/ws/stomp/endpoint/welcome").withSockJS();
+        registry.addEndpoint("/ws/url/welcome").withSockJS(); // connect /ws/url/welcome
     }
 
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
-        // send message on messaging endpoint /app/ws/stomp/endpoint/welcome
-        registry.setApplicationDestinationPrefixes("/app");
-        registry.enableSimpleBroker("/ws/messaging/topic");
+        registry.setApplicationDestinationPrefixes("/app"); // send /app/ws/url/welcome
+        registry.enableSimpleBroker("/ws/topic"); // subscribe /ws/topic/welcome
     }
 }

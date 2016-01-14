@@ -1,0 +1,12 @@
+spring:
+  data:
+    rest:
+      base-path: /api
+
+logging:
+  level:
+    root: INFO
+#    org.springframework.web.socket: DEBUG
+#    org.springframework.messaging: DEBUG
+#    org.springframework.boot.autoconfigure.security: DEBUG
+#    org.springframework.security: DEBUG

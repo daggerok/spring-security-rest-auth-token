@@ -16,8 +16,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 @Component
-public class DemoAuthenticationTokenFilter extends GenericFilterBean {
-    @Autowired DemoTokenService tokenService;
+public class AuthenticationFilter extends GenericFilterBean {
+    @Autowired
+    TokenService tokenService;
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

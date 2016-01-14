@@ -10,12 +10,12 @@ setConnected = (connected) ->
   document.getElementById('response').innerHTML = ''
 
 connect = ->
-  socket = new SockJS '/ws/stomp/endpoint/welcome'
+  socket = new SockJS '/ws/url/welcome'
   stompClient = Stomp.over socket
   stompClient.connect {}, (frame) ->
     setConnected true
     console.log "Connected: #{frame}"
-    stompClient.subscribe '/ws/messaging/topic/welcome', (welcome) ->
+    stompClient.subscribe '/ws/topic/welcome', (welcome) ->
       showWelcome(JSON.parse(welcome.body).content)
 
 disconnect = ->
@@ -26,7 +26,7 @@ disconnect = ->
 
 sendName = ->
   name = document.getElementById('name').value
-  stompClient.send "/app/ws/stomp/endpoint/welcome", {}, JSON.stringify(name: name)
+  stompClient.send "/app/ws/url/welcome", {}, JSON.stringify(name: name)
   document.getElementById('name').value = ''
 
 showWelcome = (message) ->

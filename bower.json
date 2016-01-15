@@ -1,10 +1,14 @@
 {
-  "name": "wsock",
-  "description": "wsock",
-  "main": "sockjs-client",
+  "name": "spring-security-rest-auth-token",
+  "description": "spring-security-rest-auth-token",
+  "main": "index.js",
   "authors": [
     "Maksim Kostromin <daggerok@gmail.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/daggerok/spring-security-rest-auth-token"
+  },
   "license": "ISC",
   "moduleType": [],
   "homepage": "",
@@ -16,10 +20,9 @@
     "tests"
   ],
   "dependencies": {
+    "sockjs": "sockjs-client#~1.0.3",
     "stomp": "stomp-websocket#~2.3.4",
-    "sockjs-client": "~1.0.3",
     "jquery": "~2.2.0",
-    "knockout": "~3.4.0",
     "bootstrap": "~3.3.6"
   }
 }

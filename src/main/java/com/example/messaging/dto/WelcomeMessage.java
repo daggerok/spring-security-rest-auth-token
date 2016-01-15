@@ -10,9 +10,8 @@ import java.io.Serializable;
 @Data
 @NoArgsConstructor
 @RequiredArgsConstructor(staticName = "of")
-public class Welcome implements Serializable {
+public class WelcomeMessage implements Serializable {
     private static final long serialVersionUID = 7522996086108937228L;
 
-    @NonNull
-    String content;
+    @NonNull Message message;
 }

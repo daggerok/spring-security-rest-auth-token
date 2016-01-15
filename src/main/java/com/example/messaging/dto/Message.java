@@ -13,6 +13,6 @@ import java.io.Serializable;
 public class Message implements Serializable {
     private static final long serialVersionUID = -3802017719737747204L;
 
-    @NonNull
-    String name;
+    @NonNull String username;
+    @NonNull String message;
 }

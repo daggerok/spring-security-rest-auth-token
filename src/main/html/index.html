@@ -4,17 +4,40 @@
     <meta charset="UTF-8">
     <title>wsock</title>
     <link rel="stylesheet" href="index.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body onload="disconnect()">
 <div class="container">
     <div class="container panel-heading">
-        <button class="btn btn-success" id="connect" onclick="connect()">Connect</button>
-        <button class="btn btn-warning" id="disconnect" disabled="disabled" onclick="disconnect()">Disconnect</button>
+        <button class="btn btn-success" id="connect">connect</button>
+        <button class="btn btn-warning" id="disconnect" disabled="disabled">disconnect</button>
+
+        <form role="form" id="form">
+            <div class="form-group">
+                <label for="username">enter username</label>
+                <input type="text" class="form-control" id="username" autocomplete="off">
+            </div>
+            <div class="form-group">
+                <label for="password">enter password</label>
+                <input type="password" class="form-control" id="password">
+            </div>
+            <button type="submit" class="btn btn-default">Login</button>
+        </form>
     </div>
-    <div class="container" id="conversationDiv">
-        <label>What is your name?</label><input type="text" id="name"/>
-        <button id="sendName" onclick="sendName()">Send</button>
-        <p id="response"></p>
+
+    <div class="container panel-heading">
+        <form id="conversationDiv" role="form">
+            <div class="form-group">
+                <label for="message">send message</label>
+                <input class="form-control" type="text" id="message" autocomplete="off" autofocus />
+            </div>
+        </form>
+    </div>
+
+    <div id="users" class="pull-right"></div>
+
+    <div id="content" class="container row">
+        <div id="response" class="col-lg-9"></div>
     </div>
 </div>
 <script src="index.js"></script>

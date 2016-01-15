@@ -4,7 +4,7 @@
 
 ###
   this is how we will open connection
-  
+
   before sending or for subscribing on the messages you must connect to the Stomp endpoint
   after that, we will render initial page and subscribe for welcome messages
 ###
@@ -12,17 +12,23 @@ connect = ->
   unless Api.WebSocket.isConnected()
     Api.WebSocket.connect (frame) ->
       Api.WebSocket.setConnected true
+
       reset()
+
       Api.WebSocket.subscribe (welcome) ->
         render(welcome)
 
 ###
   this is how we send outbound stomp message to the endpoint
 ###
-sendName = ->
-  name = document.getElementById('name').value
-  Api.WebSocket.send JSON.stringify(name: name)
-  document.getElementById('name').value = ''
+sendMessage = ->
+  message = $('#message').val()
+
+  Api.WebSocket.send JSON.stringify
+    username: Api.Rest.getUsername()
+    message: message
+
+  $('#message').val ''
 
 ###
   this is how we disconnect from the server
@@ -30,6 +36,7 @@ sendName = ->
 disconnect = ->
   if Api.WebSocket.isConnected()
     Api.WebSocket.disconnect()
+
   reset()
 
 ###
@@ -42,31 +49,63 @@ disconnect = ->
   just frontend: reset page area on connect or disconnect
 ###
 reset = ->
-  document.getElementById('connect').disabled = Api.WebSocket.isConnected();
-  document.getElementById('disconnect').disabled = not Api.WebSocket.isConnected();
+  $('#connect').prop 'disabled', Api.WebSocket.isConnected()
+  $('#disconnect').prop 'disabled', not Api.WebSocket.isConnected()
+
   if Api.WebSocket.isConnected()
-    document.getElementById('conversationDiv').style.visibility = 'visible'
+    $('#conversationDiv').attr 'style', 'visibility: visible'
   else
-    document.getElementById('conversationDiv').style.visibility = 'hidden'
-  document.getElementById('response').innerHTML = ''
+    $('#conversationDiv').attr 'style', 'visibility: hidden'
+
+  $('#response').html ''
 
 ###
   just frontend: render received message
 ###
 render = (welcome) ->
-  message = JSON.parse(welcome.body).content
-  response = document.getElementById 'response'
-  p = document.createElement 'p'
-  p.style.wordWrap = 'break-word'
-  p.appendChild(document.createTextNode message)
-  response.appendChild p
+  message = JSON.parse(welcome.body).message.message
+  username = JSON.parse(welcome.body).message.username
+
+  p = $ '<p>'
+  p.css 'wordWrap', 'break-word'
+  p.append "#{username}: #{message}"
+
+  response = $ '#response'
+  response.prepend p
+
+$('#connect').click ->
+  connect()
+
+$('#disconnect').click ->
+  disconnect()
+
+$('#conversationDiv').submit (event) ->
+  event.preventDefault()
+  sendMessage()
 
 ###
   using App.Rest api
 ###
 
 ###
-  this is how we login with username and auth token
+  this is how we do login with username and password
 
   in our case token it's just a password, but it will fully validate on backend
 ###
+$('#form').submit (event) ->
+  event.preventDefault()
+
+  username = $('#username').val()
+  password = $('#password').val()
+  self = $ @
+  $.when(Api.Rest.auth username, password)
+    .then ->
+      $.when Api.Rest.getUsers (data) ->
+        self.toggle 'fast'
+        $('#connect').click()
+        appendUser(user) for user in data._embedded.users
+
+appendUser = (user) ->
+  div = $('<div>')
+  div.append user.username
+  $('#users').append(div).hide().fadeIn 'fast'

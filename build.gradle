@@ -38,22 +38,18 @@ dependencies {
 				"org.springframework.restdocs:spring-restdocs-mockmvc"
 }
 
-/**
- * front-end
- */
 import org.apache.tools.ant.taskdefs.condition.Os
 
 import java.nio.file.Files
 import java.nio.file.Paths
-
 // gradle node -Pnpm=$profile // where profile is: [prod, dev]
 task node(type: Exec) {
 	def npm = project.hasProperty("npm") ? project.property("npm") : defaultProfile
-	def frontendDir = "${project.projectDir}/node"
+	def frontendDir = "$project.projectDir/node"
 	def isWindows = Os.isFamily(Os.FAMILY_WINDOWS)
-	def script = "${frontendDir}/${npm}." + (isWindows ? "cmd" : "bash")
+	def script = "$frontendDir/$npm." + (isWindows ? "cmd" : "bash")
 
-	if (Files.notExists(Paths.get(script))) throw new GradleException("file ${script} wasn't found.")
+	if (Files.notExists(Paths.get(script))) throw new GradleException("file $script wasn't found.")
 
 	workingDir frontendDir
 	commandLine isWindows ? ["cmd", "/c", script] : ["bash", "-x", script]

@@ -1,7 +1,7 @@
 path              =
   public: 'src/main/resources/public'
   scripts: 'src/main/coffee'
-  bower: 'build/vendors'
+  vendors: 'build/vendors'
   styles: 'src/main/css'
   html: 'src/main/html'
   dist: 'build/dist'
@@ -9,26 +9,26 @@ path              =
   js: 'index.js'
 
 jsFilesToPackage  = [
-  "#{path.bower}/jquery/dist/jquery.js"
-  "#{path.bower}/knockout/dist/knockout.debug.js"
-  "#{path.bower}/sockjs-client/dist/sockjs-0.3.4.js"
-  "#{path.bower}/stomp/lib/stomp.js"
+  "#{path.vendors}/jquery/dist/jquery.js"
+  "#{path.vendors}/knockout/dist/knockout.debug.js"
+  "#{path.vendors}/sockjs-client/dist/sockjs-0.3.4.js"
+  "#{path.vendors}/stomp/lib/stomp.js"
   "#{path.dist}/**/*.js"
 ]
 
 cssFilesToPackage = [
-  "#{path.bower}/bootstrap/dist/css/bootstrap.css"
+  "#{path.vendors}/bootstrap/dist/css/bootstrap.css"
   "#{path.styles}/**/*.css"
 ]
 
 gulp              = require 'gulp'
+remove            = require 'gulp-rimraf'
 coffee            = require 'gulp-coffee'
 concat            = require 'gulp-concat'
 uglify            = require 'gulp-uglify'
 cssnano           = require 'gulp-cssnano'
-remove            = require 'gulp-rimraf'
-require 'colors'
 
+require 'colors'
 log = (error) ->
   console.log [
     "BUILD FAILED: #{error.name ? ''}".red.underline
@@ -83,5 +83,5 @@ gulp.task 'dev', ['dev-js', 'dev-css', 'html']
 gulp.task 'watch', ['dev'], ->
   gulp.watch "#{path.scripts}/**/*.coffee", ['coffee']
   gulp.watch "#{path.styles}/**/*.css", ['dev-css']
-  gulp.watch "#{path.html}/**/*.html", ['dev-html']
+  gulp.watch "#{path.html}/**/*.html", ['html']
   gulp.watch "#{path.dist}/**/*.js", ['dev-js']

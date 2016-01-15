@@ -7,13 +7,19 @@ class @Api
     platform configuration
   ###
   apiConfig =
-    debug: no
+    debug: yes
 
   ###
     get debug mode on true if enabled
   ###
   @debugModeOn = ->
     apiConfig.debug
+
+#  ###
+#    default debug logger if debug enabled
+#  ###
+#  @debug = (data) ->
+#    console.log 'debug data:', data if apiConfig.debug
 
   ###
     api to work with platform WebSocket services
@@ -85,27 +91,58 @@ class @Api
       rest services configuration
     ###
     restConfig =
-      csrf: ''
-      auth:
-        username: ''
-        token: ''
+      authHeaders: null
       http:
         url:
           csrf: '/csrf'
+          users: '/api/users'
         method:
           get: 'GET'
           post: 'POST'
 
     ###
-      fetch actual CSRF
+      get username
     ###
-    @getCsrf = ->
+    @getUsername = ->
+      if restConfig.authHeaders? then restConfig.authHeaders.username else 'anonymous'
+
+    ###
+      fetch and store auth token, username and actual CSRF
+
+      params:
+        username:
+          require: username
+        password:
+          require: password
+    ###
+    @auth = (username, password) ->
+      # fetch csrf and store it with username and password into auth headers
       $.ajax
         url: restConfig.http.url.csrf
         type: restConfig.http.method.get
-        success: (data, status, xhr) ->
-          restConfig.csrf = data
         error: (xhr, status, err) ->
-          console.log status, err
-        complete: (xhr, status) ->
-          console.log 'complete' if apiConfig.debug
+          console.error status, err
+#        complete: (xhr, status) ->
+#          console.log 'complete' if apiConfig.debug
+        success: (data, status, xhr) ->
+          # store username and token TODO: should be fetched from secured auth token service
+          restConfig.authHeaders =
+            'X-CSRF-TOKEN': data.token
+            username: username
+            token: password
+
+    ###
+      get all users
+
+      params:
+        handler:
+          required: callback function to process result if handler exists (optional)
+    ###
+    @getUsers = (handler) ->
+      console.log 'headers', restConfig.authHeaders
+      $.ajax
+        url: restConfig.http.url.users
+        type: restConfig.http.method.get
+        headers: restConfig.authHeaders
+        success: (data) ->
+          handler data

@@ -15,12 +15,6 @@ class @Api
   @debugModeOn = ->
     apiConfig.debug
 
-#  ###
-#    default debug logger if debug enabled
-#  ###
-#  @debug = (data) ->
-#    console.log 'debug data:', data if apiConfig.debug
-
   ###
     api to work with platform WebSocket services
   ###
@@ -122,14 +116,22 @@ class @Api
         type: restConfig.http.method.get
         error: (xhr, status, err) ->
           console.error status, err
-#        complete: (xhr, status) ->
-#          console.log 'complete' if apiConfig.debug
+        complete: (xhr, status) ->
+          console.log 'complete' if Api.debugModeOn()
         success: (data, status, xhr) ->
           # store username and token TODO: should be fetched from secured auth token service
           restConfig.authHeaders =
             'X-CSRF-TOKEN': data.token
             username: username
             token: password
+
+    ###
+      logout
+
+      clearing auth headers
+    ###
+    @logout = ->
+      restConfig.authHeaders = null
 
     ###
       get all users

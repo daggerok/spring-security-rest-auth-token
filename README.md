@@ -1,6 +1,8 @@
 spring-security-rest-auth-token [![build](https://travis-ci.org/daggerok/spring-security-rest-auth-token.svg?branch=master)](https://travis-ci.org/daggerok/spring-security-rest-auth-token)
 ===============================
 
+Just a chat. Simple and nice (:
+
 **tags**
 
 - spring security with authentication token

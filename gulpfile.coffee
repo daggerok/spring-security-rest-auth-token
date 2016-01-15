@@ -1,4 +1,4 @@
-path    =
+path      =
   public: 'src/main/resources/public'
   scripts: 'src/main/coffee'
   vendors: 'build/vendors'
@@ -65,7 +65,26 @@ gulp.task 'html', ->
 
 gulp.task 'default', ['js', 'css', 'html']
 
-gulp.task 'dev-api-js', ['coffee'], ->
+require("colors")
+log = (error) ->
+  console.log [
+    "BUILD FAILED: #{error.name ? ''}".red.underline
+    "\u0007" # beep
+    "#{error.code ? ''}"
+    "#{error.message ? ''}"
+    "in #{error.filename ? ''}"
+    "gulp plugin: #{error.plugin ? ''}"
+    "error: #{error}"
+  ].join "\n"
+  this.end()
+
+gulp.task 'dev-coffee', ->
+  gulp.src("#{path.scripts}/**/*.coffee", base: path.scripts)
+    .pipe(coffee bare: true)
+      .on('error', log)
+    .pipe(gulp.dest path.dist)
+
+gulp.task 'dev-api-js', ['dev-coffee'], ->
   gulp.src(apiJs)
     .pipe(concat path.js)
     .pipe(gulp.dest path.api)

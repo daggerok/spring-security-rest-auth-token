@@ -1,5 +1,5 @@
 ###
-  sigma gambling platform api
+  platform api
 ###
 class @Api
 

@@ -16,3 +16,12 @@ gradle clean node build # or: $ gradle clean && npm start && gradle build # inst
 gradle bootRun # or java -jar build/libs/*.jar
 open http://localhost:8080/
 ```
+
+## other repos
+
+* https://github.com/daggerok/spring-websocket-stomp
+* https://github.com/daggerok/spring-boot-rest-jms-activemq
+* https://github.com/daggerok/spring-streaming
+* https://github.com/daggerok/sockjs-stomp-websocket-react-and-vanilla
+* https://github.com/daggerok/spring-security-rest-auth-token
+* https://github.com/daggerok/wsock
